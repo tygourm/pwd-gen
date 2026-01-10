@@ -1,0 +1,46 @@
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["pytest-cov", "ruff", "ty", "uv-build"]
+
+[project]
+name = "pwd-gen"
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = ["cryptography"]
+
+[project.optional-dependencies]
+cli = ["typer"]
+
+[project.scripts]
+pwd-gen = "pwd_gen.cli:main"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov=src/pwd_gen",
+    "--cov-report=term",
+    "--cov-report=html",
+    "--cov-fail-under=90",
+    "-p no:cacheprovider",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM812", # missing-trailing-comma
+    "D100",   # undocumented-public-module
+    "D103",   # undocumented-public-function
+    "D104",   # undocumented-public-package
+    "INP001", # implicit-namespace-package
+]
+
+[tool.ruff.lint.per-file-ignores]
+"test/*" = [
+    "PLR2004", # magic-value-comparison
+    "S101",    # assert
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
