@@ -19,6 +19,13 @@ def test_pwd_urlsafe(runner: CliRunner) -> None:
     assert not all(c in "0123456789abcdef" for c in output)
 
 
+def test_pwd_invalid_nbytes(runner: CliRunner) -> None:
+    result = runner.invoke(app, ["pwd", "--nbytes", "0"])
+    output = result.stderr.strip()
+    assert result.exit_code == 2
+    assert "nbytes must be >= 1" in output
+
+
 def test_rsa(runner: CliRunner) -> None:
     result = runner.invoke(app, ["rsa"])
     output = result.stdout.strip()
@@ -27,3 +34,17 @@ def test_rsa(runner: CliRunner) -> None:
     assert "-----END RSA PRIVATE KEY-----" in output
     assert "-----BEGIN PUBLIC KEY-----" in output
     assert "-----END PUBLIC KEY-----" in output
+
+
+def test_rsa_invalid_public_exponent(runner: CliRunner) -> None:
+    result = runner.invoke(app, ["rsa", "--public-exponent", "7"])
+    output = result.stderr.strip()
+    assert result.exit_code == 2
+    assert "public_exponent must be 3 or 65537" in output
+
+
+def test_rsa_invalid_key_size(runner: CliRunner) -> None:
+    result = runner.invoke(app, ["rsa", "--key-size", "512"])
+    output = result.stderr.strip()
+    assert result.exit_code == 2
+    assert "key_size must be >= 1024" in output
