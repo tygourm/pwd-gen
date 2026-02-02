@@ -11,7 +11,7 @@ write: init
 	uv run ruff format --no-cache
 
 check: init
-	uv run ruff check --fix --no-cache && uv run ty check
+	uv run ruff check --fix --no-cache && uv run ty check --error-on-warning
 
 clean:
 	rm .coverage

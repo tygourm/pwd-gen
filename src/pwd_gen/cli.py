@@ -36,9 +36,9 @@ def rsa(
     typer.echo(pub)
 
 
-def main() -> None:
+def main() -> None:  # pragma: no cover
     app()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
